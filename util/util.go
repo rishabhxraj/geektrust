@@ -21,11 +21,10 @@ func ValidateTime(from time.Time, to time.Time) bool {
 		from.After(ParseTime("00:00")) &&
 		to.Before(ParseTime("23:45")) &&
 		int(to.Sub(from).Minutes())%15 == 0 &&
-		from.Minute()%15 == 0 || to.Minute()%15 == 0 {
+		(from.Minute()%15 == 0 || to.Minute()%15 == 0) {
 		return true
-	} else {
-		return false
 	}
+	return false
 }
 
 // ParseInt converts string to int
