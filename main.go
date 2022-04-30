@@ -33,16 +33,19 @@ func main() {
 		if strings.HasPrefix(line, constants.VACANCY) {
 			from := util.ParseTime(strings.Fields(line)[1])
 			to := util.ParseTime(strings.Fields(line)[2])
-			util.ValidateTime(from, to)
-			meetinghalls := vacancy.CheckVacancy(from, to)
-			if len(meetinghalls) == 0 {
-				fmt.Println(constants.NoVacancy)
-			} else {
-				var availablehalls []string
-				for _, meetinghall := range meetinghalls {
-					availablehalls = append(availablehalls, meetinghall.Name)
+			if util.ValidateTime(from, to) {
+				meetinghalls := vacancy.CheckVacancy(from, to)
+				if len(meetinghalls) == 0 {
+					fmt.Println(constants.NoVacancy)
+				} else {
+					var availablehalls []string
+					for _, meetinghall := range meetinghalls {
+						availablehalls = append(availablehalls, meetinghall.Name)
+					}
+					fmt.Println(strings.Join(availablehalls, " "))
 				}
-				fmt.Println(strings.Join(availablehalls, " "))
+			} else {
+				fmt.Println(constants.IncorrectInput)
 			}
 		} else if strings.HasPrefix(line, constants.BOOK) {
 			from := util.ParseTime(strings.Fields(line)[1])
