@@ -15,15 +15,17 @@ func ParseTime(timestr string) time.Time {
 	return t
 }
 
-// ValidateTime should be of 15 minutes interval and from 00:00 to 23:45
+// ValidateTime should be started and ended only in 15 minute intervals, i.e. XX:00, XX:15, XX:30, XX:45 and from 00:00 to 23:45
 func ValidateTime(from time.Time, to time.Time) bool {
 	if from.Before(to) &&
 		from.After(ParseTime("00:00")) &&
 		to.Before(ParseTime("23:45")) &&
-		int(to.Sub(from).Minutes())%15 == 0 {
+		int(to.Sub(from).Minutes())%15 == 0 &&
+		from.Minute()%15 == 0 || to.Minute()%15 == 0 {
 		return true
+	} else {
+		return false
 	}
-	return false
 }
 
 // ParseInt converts string to int
